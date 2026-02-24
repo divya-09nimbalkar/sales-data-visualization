@@ -1,18 +1,17 @@
 import pandas as pd
+import os
 
-# Load dataset
-df = pd.read_csv("../data/bmw_raw.csv")
+# Get project root directory dynamically
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Create Revenue column
+raw_path = os.path.join(BASE_DIR, "data", "bmw_raw.csv")
+processed_path = os.path.join(BASE_DIR, "data", "bmw_processed.csv")
+
+df = pd.read_csv(raw_path)
+
+# Feature Engineering
 df["Revenue"] = df["Price_USD"] * df["Sales_Volume"]
 
-# Price per Engine Liter
-df["Price_per_Liter"] = df["Price_USD"] / df["Engine_Size_L"]
+df.to_csv(processed_path, index=False)
 
-# Sales Growth per Region
-df["Sales_Growth"] = df.groupby("Region")["Sales_Volume"].pct_change()
-
-# Save cleaned + engineered dataset
-df.to_csv("../data/bmw_cleaned.csv", index=False)
-
-print("Feature Engineering Completed Successfully!")
+print("Feature Engineering Completed & Processed File Saved Successfully!")
