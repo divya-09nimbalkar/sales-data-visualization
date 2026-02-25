@@ -1,31 +1,21 @@
 import pandas as pd
 
-<<<<<<< HEAD
-# Go one folder up (from src to project root)
-df = pd.read_csv(r"C:\Users\HP\Downloads\NIT_DATA_SCIENCE\project_data_visualiation\src\bmw_raw.csv")
+def load_data():
+    """
+    Load BMW dataset from data folder
+    """
+    df = pd.read_csv("data/bmw_raw.csv")
+    return df
 
-print("File Loaded Successfully!\n")
-=======
-# Load dataset
-df = pd.read_csv("data/bmw_raw.csv")
->>>>>>> 4ccc93b427ec77755189a7f4225955dcb36fa408
 
-print("----- FIRST 5 ROWS -----")
-print(df.head())
-
-print("\n----- DATASET INFO -----")
-print(df.info())
-
-print("\n----- MISSING VALUES -----")
-print(df.isnull().sum())
-
-print("\n----- STATISTICAL SUMMARY -----")
-<<<<<<< HEAD
-print(df.describe())
-=======
-print(df.describe())
-
-print("\n----- UNIQUE VALUES PER COLUMN -----")
-for col in df.columns:
-    print(f"{col} : {df[col].nunique()}")
->>>>>>> 4ccc93b427ec77755189a7f4225955dcb36fa408
+def get_basic_info(df):
+    """
+    Return dataset summary information
+    """
+    info = {
+        "shape": df.shape,
+        "missing_values": df.isnull().sum(),
+        "description": df.describe(),
+        "unique_counts": df.nunique()
+    }
+    return info
