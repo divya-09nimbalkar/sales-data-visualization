@@ -1,20 +1,34 @@
-import pandas as pd
-import os
+def calculate_kpis(df):
+    """
+    Calculate executive KPI metrics from dataframe.
+    Returns a dictionary of KPI values.
+    """
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-processed_path = os.path.join(BASE_DIR, "data", "bmw_processed.csv")
+    kpis = {}
 
-df = pd.read_csv(processed_path)
+    if "Revenue" in df.columns:
+        kpis["total_revenue"] = df["Revenue"].sum()
+    else:
+        kpis["total_revenue"] = 0
 
-total_revenue = df["Revenue"].sum()
-total_sales = df["Sales_Volume"].sum()
-avg_price = df["Price_USD"].mean()
-top_model = df.groupby("Model")["Sales_Volume"].sum().idxmax()
-top_region = df.groupby("Region")["Revenue"].sum().idxmax()
+    if "Sales_Volume" in df.columns:
+        kpis["total_sales"] = df["Sales_Volume"].sum()
+    else:
+        kpis["total_sales"] = 0
 
-print("----- EXECUTIVE KPI DASHBOARD -----")
-print(f"Total Revenue: ${total_revenue:,.2f}")
-print(f"Total Sales Volume: {total_sales:,}")
-print(f"Average Price: ${avg_price:,.2f}")
-print(f"Top Selling Model: {top_model}")
-print(f"Top Region by Revenue: {top_region}")
+    if "Price_USD" in df.columns:
+        kpis["avg_price"] = df["Price_USD"].mean()
+    else:
+        kpis["avg_price"] = 0
+
+    if "Model" in df.columns and "Sales_Volume" in df.columns:
+        kpis["top_model"] = df.groupby("Model")["Sales_Volume"].sum().idxmax()
+    else:
+        kpis["top_model"] = "N/A"
+
+    if "Region" in df.columns and "Revenue" in df.columns:
+        kpis["top_region"] = df.groupby("Region")["Revenue"].sum().idxmax()
+    else:
+        kpis["top_region"] = "N/A"
+
+    return kpis
